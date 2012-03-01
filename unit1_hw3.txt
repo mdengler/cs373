@@ -1,0 +1,137 @@
+# CS 373 Unit 1 HW3: Bayes Rule
+
+# P(F) = 0.001
+# P(!F) = 0.999
+# B = neighbor says "Yes, house is burning"
+# P(L) = 0.1
+# P(!L) = 0.9
+
+# Bayes: P(A|B) = P(B|A)P(B)/P(A)
+
+# Bayes: P(prior|obs) = P(obs|prior)*P(prior) / P(obs)
+# P(obs) = sum for all i of P(obs|prior_i) * P(prior_i)
+
+
+# pbar(F|B) = ?
+# pbar(!F|B) = ?
+# p(F|B) = ?
+# p(!F|B) = ?
+
+
+# obs = B = fire
+# prior = P(F), P(!F)
+
+
+# p(F|B) = p(B|F) * p(F) / p(B)
+# pbar(F|B) = p(B|F) * p(F)
+#           = 0.0009 * 0.001
+#           = 0.0000009  # think this is using wrong p(B|F) numbers
+# try again
+#           = p(B|F) * p(F)
+#           = 0.9 * 0.001
+#           = 0.0009
+
+# and taking alpha = 0.1899, we get
+#           = 0.09 / 0.1899
+#           = 0.4739...
+# should be able to double check with below
+#
+# this does not seem right, since there are > 1000 reports of fire
+# when there are only 10 fires in 10k observations
+# both alpha and pbar are wrong
+# taking alpha = 0.1016991 and pbar(F|B) = 0.0009, we get
+#           = 0.0009 / 0.1016991
+#           = 0.008849635837485288
+
+
+# p(!F|B) = p(B|!F) * p(!F) / p(B)
+# pbar(!F|B) = p(B|!F) * p(!F)
+#            = 0.1 * 0.999
+#            = 0.0999  # using correct numbers
+# no, still looks wrong
+#            = p(B|!F) * p(!F)
+#            = 0.1009 * 0.999
+#            = 0.1007991
+
+# thus alpha is
+# alpha      = pbar(F|B) + pbar(!F|B)
+#            = 0.09 + 0.0999
+#            = 0.1899  # this is not p(B) though?!
+#
+# hmm, formula looks right, not sure what the problem is
+#
+# try again
+#
+#            = pbar(F|B) + pbar(!F|B)
+#            = 0.0009 + 0.1007991
+#            = 0.1016991
+
+
+
+# p(B)       = p(B|A) * p(A) for all A
+#            = p(B|F) * p(F) + p(B|!F) * p(!F)
+#            = (0.0009 * 0.001)  + (0.8991 * 0.999)
+#            = 0.0009 (must be wrong; using wrong p(B|F) numbers?)
+#
+# try again
+#            = p(B|F) * p(F) + p(B|!F) * p(!F)
+#            = (0.9 * 0.001) + (0.1 * 0.999)
+#            yes, this yields 0.1008
+#            = 0.1008
+
+# probability of obs given fire
+# p(B|F) =
+
+
+# p(B) = (p(B|F) *  p(F)) + (p(B|!F) * p(!F))
+#      =         * 0.001  +          * 0.999
+
+# if there is a fire (0.001), 90% of the time he won't lie and the observation will be "fire!"
+# if there is a fire (0.001), 10% of the time he will lie  and the observation will be "no fire"
+# so is p(B|F) = 0.9 * 0.001, or 0.9?  It's 0.9, I think
+# I'm not sure p(B|F) is very clearly written / formulated; it should be...hmmm
+
+p(B|F)   = 0.9 * 0.001 = 0.0009
+p(!B|F)  = 0.1 * 0.001 = 0.0001
+p(B|!F)  = 0.1 * 0.999 = 0.8991
+p(!B|!F) = 0.9 * 0.999 = 0.0999
+
+I think this ^^^^ is wrong; I think:
+
+p(B|F)   = 0.9
+p(!B|F)  = 0.1
+p(B|!F)  = 0.1
+p(!B|!F) = 0.9
+
+       fire
+    0.001   0.9
+    F        !F
+ 0.9 0.1  0.1  0.9
+B    !B    B   !B
+
+So in 10000 samples,
+  10 will be fire
+   9 will be fire and "fire!"
+   1 will be fire and "no fire"
+9990 will be no fire
+8991 will be no fire and "no fire"
+ 999 will be no fire and "fire!"
+
+p(B|F) = 9 / 10000 = 0.0009, as above -- NO, 0.9; s/b 9 / 10
+p(B)  =  (9 + 999) / 10000 = 0.1008
+p(!B) = (8991 + 1) / 10000 = 0.8992
+p(F|B) = 10 / (9 + 999) = 0.0099
+p(!F|B) = 999 / (9 + 999.) = 0.9910
+p(B|!F) = (9 + 999) / 9990. = 0.1009
+
+prior = [0.001, 0.999]
+obs = "fire"
+conv = [0.1, 0.9] #lies 10%
+post = [(0.001 * 0.1) + (0.999 * 0.1),
+        (0.001 * 0.9) + (0.999 * 0.9)n,]
+
+
+posterior = [0] * len(prior)
+
+for i in range(prior):
+    

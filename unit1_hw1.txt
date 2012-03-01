@@ -1,0 +1,6 @@
+# CS 373 Unit 1 HW1: Probabilty
+seemed simple enough
+0.8
+0.04
+0.12 + 0.12 = 0.24
+

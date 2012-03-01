@@ -1,0 +1,18 @@
+# CS 373 Unit 1 HW2: Localization
+
+Dim  #SV   State Variables
+---  ---   ---------------
+1     1    X
+2     3    X, Y, XY-heading
+3     6    X, Y, Z, XY-heading, YZ-heading, XZ-heading
+4    10    X, Y, Z, C, 4c2 headings
+5    15    5 coords, 5c2 headings
+6    21    6 coords, 6c2
+
+
+nCr = n! / (n-k)!k!
+
+growth: n + nCr
+
+This doesn't seem quadratic
+
