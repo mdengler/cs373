@@ -71,6 +71,32 @@ def sense(prior, observation, p_right=None):
             reality = colors[y][x]
 
             # TODO: review why this works!
+            #
+            # One attempt to explain why this works: This is the crux
+            # of Bayes' Theorem, wherein we take into account the
+            # additional information and update the probabilities.  We
+            # haven't "normalized" them yet, so they're not really
+            # probabilities / a probability distribution, but this is
+            # doing the essence of updating the relative probabilities
+            # of the old prior with the new information.  But we have
+            # to decide what the new information meant, and this has
+            # always seemed to me to be cheating: if we knew what the
+            # reality was, why do we need the observation?  The answer
+            # is that we need the observation to decide where in
+            # reality we likely are, because _that_ is the part we
+            # don't know.  Another way: the math works out that we
+            # have to know what the chances of the observation are in
+            # order to have enough information to solve Bayes' Theorem
+            # for the part we're interested in.  Of course it would be
+            # good to have this, but I guess this approach is not
+            # useful if we don't have this information.  SLAM -
+            # Simultaneous Localization and Mapping - was mentioned as
+            # an active research area, so I guess this is pretty hard
+            # still.  It's a shame, as I would have thought the
+            # driving was almost simpler if you didn't have to know
+            # where you were in some absolute sense, but just know how
+            # far you were from hitting the side of the road.  Oh
+            # well.
             if observation == reality:
                 new_p = prior_xy * p_right
             else:
