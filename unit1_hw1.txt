@@ -1,6 +1,30 @@
 # CS 373 Unit 1 HW1: Probabilty
 seemed simple enough
-0.8
-0.04
-0.12 + 0.12 = 0.24
+1) 0.8
+2) 0.04
+3) 0.12 + 0.12 = 0.24
 
+
+Post-answer review:
+1) is right
+2) is right
+3) is incorrect; should be:
+
+0.6  = 0.6 * 0.2  + 0.6 * 0.8
+p(Y) = p(Y|X)p(X) + p(Y|!X)p(!X)
+
+The first observation I missed was that if X can only take on two
+values, and the probability of Y given each of those two values is
+defined to be the same number, then obviously it is this number that
+is p(Y).  I didn't understand that X can only have two values, but I
+think I often get confused between whether the notation p(X) refers to
+X being an observation or a "random variable".  I have to make sure I
+have this clear in each thing I read before I continue.
+
+The next thing I failed to do was get the total probability part
+right.  I'm not sure which thing I did wrong since I didn't write down
+my work :(. By Total probability: p(Y) = sum for all i of
+p(Y|X_i)p(X_i); i member of [0, 1], so X_0 = 0.2 and X_1 = 0.8 (1 -
+0.2)...I'm not sure I see this yet, unfort, why X only has the two
+values; is it just implied because we've only been given p(Y|X) and
+p(Y|!X)?  I think it is.

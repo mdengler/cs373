@@ -16,3 +16,15 @@ growth: n + nCr
 
 This doesn't seem quadratic
 
+
+Post-answer review:
+I put down "none of the above".  I understood the question to be
+asking how many _types_ of state variables, not how many _values_ each
+variable could take.  Because he says the "number" of state variables
+at one point, and that there are six of them.  For each variable, you
+have a number of observations, and of course the amount of memory is
+related to the number of observations raised to the power of the
+number of state variables (if they all have the same sampling
+frequency, which seems a very simplifying assumption).  I can see how
+I should have read it now :(.
+

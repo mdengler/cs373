@@ -103,8 +103,10 @@ p(!B|F)  = 0.1
 p(B|!F)  = 0.1
 p(!B|!F) = 0.9
 
+
+Sample space enumeration tree:
        fire
-    0.001   0.9
+    0.001   0.999
     F        !F
  0.9 0.1  0.1  0.9
 B    !B    B   !B
@@ -135,3 +137,272 @@ posterior = [0] * len(prior)
 
 for i in range(prior):
     
+
+
+Submitted answers:
+1) p_bar(F|B) = 0.0009
+2) p_bar(!F|B) = 0.1008
+3) p(F|B) = 0.0099
+4) p(!F|B) = 0.9910
+
+
+Post-answer review:
+His answers were arrived at much simpler than mine; I must understand
+why.
+
+1) p_bar(F|B) = p(F) * p(!B) = 0.001 * 0.9 = 0.0009
+actually it's
+   p_bar(F|B) = p(F) * p(B|F) = 0.001 * 0.9 = 0.0009
+2) p_bar(!F|B) = p(!F) * p(B) = 0.999 * 0.1 = 0.0999
+actually it's
+   p_bar(!F|B) = p(!F) * p(B|!F) = 0.999 * 0.1 = 0.0999
+now use normalizer, 1 / (sum of answers 1 and 2), to get 3) and 4):
+(/ 1 (+ 0.0009 0.0999)) is approx 9.92
+3) p(F|B) = p_bar(F|B) * normalizer = 0.0009 * 9.92 = 0.0089
+4) p(!F|B) = p_bar(!F|B) * normalizer = 0.0999 * 9.92 = 0.991
+
+
+1) and 2)'s explanations are not similar to what I got from the
+"Sample space enumeration tree".  I think there must be some
+misunderstanding here.  Perhaps the whole sample space tree is not
+applicable to this conditional probability problem, or I was looking
+at the wrong combinations of it.
+
+To understand the tree vs. what I should have understand, let's start
+with Bayes's theorem again:
+
+p(prior|observation) = p(observation|prior)p(prior) / p(observation)
+
+So this works whether "prior" is a whole distribution or an individual
+sample, the reason for which I don't think I can articulate yet.
+Assuming the prior is "there is fire" = F and the observation is "neighbor
+says fire" (B), then we have:
+
+p(F|B) = p(B|F)p(F) / p(B)
+
+...and plugging in what've given by the problem, we get:
+
+p(F|B) = p(B|F) * 0.001 / p(B)
+
+One way to be wrong here is saying p(B) = 0.1.  I don't think I said
+that, but just to point out: p(B) is the probability of the neighbor
+saying fire, which is not the same as the probability of the neighbor
+lying.
+
+Can we calculate p(B) from the Sample space enumeration tree by saying
+it's (+ (* 0.1 0.001) (* 0.1 0.9)) ; 0.0901 -- no, evidently not.  Why
+not?  0.1 * 0.001 times he says there's not fire when there is, and
+0.1 * 0.9 times he says there is fire when there is not.  Right?
+Perhaps this is the probability of lieing, but that's not p(B).  Ah,
+there I go again making the mistake I just warned against: assuming
+"p(B)" means "probability of lying".  Ok, let's get at p(B) using the
+sample tree but correctly: "probability of neighbor saying fire".  Is
+it (+ (* 0.9 0.001) (* 0.1 0.9)) ; 0.0909.  Nooo...although he says
+"fire!" when there really is a fire (is this p(B|F) or p(F|B) - I
+think p(B|F), or maybe p_bar(F|B)).
+
+Argh - I just realised a massive problem with the sample space tree I
+wrote down: I have p(!F) = 0.9!!!  It is of course 0.999.  Luckily in
+my "So in 10000 samples," section I used the correct number ("9990
+will be no fire").  I've corrected the tree now.  Let's
+correct this in the previous attempt at calculating p(B): (+ (* 0.9
+0.001) (* 0.1 0.999)).  But I'm not sure why I'm calculating p(B) in
+this way; rearranging Bayes to solve for p(B) yields:
+
+p(F|B) = p(B|F)p(F) / p(B)
+p(B) = p(B|F)p(F) / p(F|B)
+
+so from the tree, I'd have:
+p(B|F) = 0.9
+p(F) = 0.001
+p(F|B) = 0.0099
+
+and substituting:
+
+p(B) = (0.9 * 0.001) / 0.0099
+...which is:
+
+0.090909...
+
+...which is nothing like the normaliser should be :(.  I'm not seeing
+where this is wrong.
+
+Let's continue with the right way, then.
+
+p(F|B) = p(B|F) * 0.001 / p(B)
+
+...is what we had gotten to.  Now he basically skips this and just
+relies on:
+
+p(F|B) = p_bar(F|B) / p(B)
+
+...and since p_bar(F|B) = 0.001 * 0.9 = 0.0009, we have:
+
+p(F|B) = 0.0009 / p(B)
+
+...and then since we know:
+
+p(B) = p_bar(F|B) + p_bar(!F|B)
+p_bar(!F|B) = 0.999 * 0.1
+
+...then we get:
+
+p(B) = 0.0009 + 0.0999 = 0.1008
+
+and the normalizer / alpha is:
+
+1/p(B) = 9.920634920634921 ~= 9.92
+
+Ok.  So we have gotten there:
+
+p(F|B) = p_bar(F|B) / p(B)
+p(F|B) = 0.0009 / 0.1008
+ = 0.008928571428571428
+~= 0.0089
+
+...and then the next question:
+
+p(!F|B) = p_bar(!F|B) / p(B)
+p(!F|B) = 0.0999 / 0.1008
+ = 0.9910714285714286
+~= 0.9910
+
+
+Then he goes on to explain the intuition that the probability of the
+house being on fire given we've observed that is higher than the
+probability of the house being on fire: the observation has helped us,
+_approximately_ by the probabiltiy of the person telling the truth,
+but not exactly, because of the normalizer.
+
+
+I'm going to take one more crack at the sample space tree to try to
+get its intutions out, given we know:
+
+p(F) = 0.001       p(!F) = 0.999
+p(B) = 0.1008      p(!B) = 0.8992
+p(F|B) = 0.0089  p(!F|B) = 0.9910
+p(B|F) =         p(!B|F) =       
+
+
+Sample space enumeration tree:
+       fire
+    0.001   0.999
+    F        !F
+ 0.9 0.1  0.1  0.9
+B    !B    B   !B
+
+p(B|F) = 0.9
+p(B|!F) = 0.1
+p(B)  =  (9 + 999) / 10000 = 0.1008
+p(!B) = (8991 + 1) / 10000 = 0.8992
+p(F|B) = 10 / (9 + 999) = 0.0099
+p(!F|B) = 999 / (9 + 999.) = 0.9910
+p(B|!F) = (9 + 999) / 9990. = 0.1009
+
+
+Let's double check p(B|F) in his way:
+p_bar(B|F) = p(B) * p(F)
+ = p(B) * p(F)
+ = 0.1008 * 0.001
+ = 0.0001008
+
+and
+
+p_bar(!B|F) = p(!B) * p(F)
+ = p(!B) * p(F)
+ = 0.8992 * 0.001
+ = 0.0008992
+
+so
+
+alpha = 0.0008992 + 0.0001008
+alpha = 0.001
+
+now we just do
+
+p(B|F) = 1/alpha * p_bar(B|F)
+ = 1000 * 0.0001008
+ = 0.1008
+
+This seems wrong :(
+
+Wait, it is wrong because I thought of "his way" wrongly.  It's not
+p_bar(B|F) = p(B) * p(F)
+...it's...
+p_bar(B|F) = p(B) * p(F|B)
+...and he gave us p(F|B) in the cancer problem, but not here
+(right?). Well actually he did, because he says "p(neighbor lies) =
+0.1", which is actually two things:
+p(B|!F) = 0.1
+p(!B|F) = 0.1
+...so that helps us get it right, I think, since:
+p(!B|F) + p(B|F) = 1.0
+thus
+p(B|F) = 0.9
+and with
+p_bar(F|B) = p(F) * p(B|F)
+we have
+p_bar(F|B) = 0.001 * 0.9
+
+I think the "neighbor lies 90% of the time" was tricky to translate
+into the two outcomes of
+1-p(!B|!F) = p(B|!F)
+and
+1-p(B|F) = p(!B|F)
+
+So let's get p_bar(!F|B):
+p_bar(!F|B) = p(!F) * p(B|!F)
+ = 0.999 * 0.1
+
+
+So let's get p(B|!F) in the same way.
+p(B|!F) = 1/p(B) * p_bar(B|!F)
+p_bar(B|!F) = 
+
+p_bar(F|B) = p(F) * p(B)
+           = 0.001 * p(B|F)
+
+
+p_bar(C|P) = p(C) * p(P|C)
+p_bar(F|B) = p(F) * p(B|F)
+
+
+It's quite frustrating to realise he solved this so simply in the same
+way he solved the Cancer problem, yet I'm solving it in a more
+difficult way because I don't like the way he "backs into" the
+solution for p(B) by working it out as the normalizer.  I feel like I
+should be able to understand each of the terms in the numerator of
+Bayes' rule from the sample tree -- that is, from the probabilities of
+lieing and fire -- directly.  This is less intuitive and hard :(.  But
+if I persevere I think I will get a much deeper understanding than
+just people that calculate the answers using the way he demonstrated.
+I'm sure he has such a deep understanding, and that it came from a
+similar reasoning path that I'm trying to follow, so I want to get
+there, too.
+
+I gave up and went to paper.  I also used the Probability (part 6-8)
+from Khan academy to get a different, clearer example:
+http://www.khanacademy.org/math/probability/v/probability--part-{6,7,8}
+.  That made me a little more au fait with the relationships in Bayes'
+Theorem.  I need to write the graphics down.  Drawing areas of
+rectangles is more useful than my solution tree.  I also found the
+solution tree was problematic because it's not clear where the
+normalisation steps happen, and that was confusing me.  I did know
+that that was a problem with the solution tree but I didn't solve it
+completely.  This helped me work out the tree:
+http://en.wikipedia.org/wiki/File:Bayes_theorem_tree_diagrams.svg and
+note that when I was writing the products of the paths to the tree
+leaves, that was neither p(A|B) nor p(B), but rather p(A|B)p(B) and
+the like.
+
+One thing that is annoying is how long it takes to switch between
+videos.
+
+I definitely missed the two interpretations of the "lying with
+probability 0.1" and the correct way to interpret my tree.  I think I
+have a better understanding of the concepts now, and can refer back to
+the trees and rectangle notes to fill in the intuitions.
+
+I am probably taking too many notes but I can almost feel my brain
+spinning up now and really enjoy solving a problem and exploring a
+concept.  On to the next unit.
