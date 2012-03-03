@@ -1,0 +1,154 @@
+http://www.udacity-forums.com/cs373/questions/7800/transcripts-of-homework-2-assignments
+
+Okay this week was pretty bad - there are several spots where I had
+serious issues understanding what exactly Sebastian said, but I think
+for the most part this will serve well as a reference. Unfortunately,
+ontop of not speaking clearly and with a strong accent, he talked so
+fast this week that sometimes whole words went missing -.- Someone
+tell him to slow down!
+Anyway, I hope this helps some whose ability to understand English is
+not quite as solid as mine.
+
+HW2.1
+This is homework assignment number two in CS373, and it's all about
+Kalman Filters. So, question number one is measurement update. Let's
+start with two gaussians and say they have identical variances. Let's
+multiply them. We know that the resulting gaussian mean will be just
+at the center of those two gaussians. I wonder if the new variance
+sigma squre is now smaller, larger or the same as either of the
+individual gaussian(s).
+
+HW2.2
+Say we have a prior of a gaussian with mean mu and covariance sigma
+square and our measurement has exactly the same mean and the same
+covariance. Suppose we multiply both and get a new mean which is the
+same as the old mean and we get a new covariance sigma square, which
+as you all know, corresponds to a peekier gaussian. I want you to
+express nu square as a multiple of sigma square. Just put the answer
+here as a real number.
+
+HW2.3
+I have another gaussian question for you. This is called a heavy tail
+gaussian. So as you go to plus/minus infinity, the guassian levels off
+at some final value alpha, as opposed to zero. My question is - is it
+possible to represent this function as a gaussian? This is the formula
+for the gaussian again. Put differently - can you find a mu and a
+sigma square for which this exact function over here is attained?
+Please just check one of these two boxes.
+
+HW2.4
+My next question pertains to the tracking problem that we talked about
+in class. In class we addressed a one-dimensional tracking problem
+where we're estimating the location of the system, and its velocity x
+dot. And I'd like now to generalize this to a two-dimensional problem
+where we are given a coordinate x and y, and the object we're tracking
+moves in two-dimensional space, and we wish to use a Kalman filter to
+understand where the object is, what its velocity is, and to even (be)
+able to predict a future location based on the estimate of the
+position and its velocity. So the only difference to class is that our
+object now moves in a two-dimensional space, whereas in class it moved
+in a one-dimensional space. So my first question is - what's the
+dimension of the state vector in the Kalman Filter? In the class, it
+was this kind of state vector, now we have a new one. How many
+dimensions or how many variables are there?
+
+HW2.5
+Now comes a tricky question. In the Kalman Filter program that we
+studied - the 2D Kalman Filter, we had a matrix F. And for delta t
+equals 0.1, our F matrix - the state transition matrix - had a main
+diagonal of one, which means in exploitation our location stays the
+same and our velocity stays the same, but we also knew, that the
+velocity affected our state in the following way. And we could now
+place 0.1 instead of the delta t to get this specific F matrix. Now I
+want to know from you for this new 2D case with the 4-dimensional
+state vector - what is the new F? This is a four by four matrix, so I
+want you to fill in all of those values. Again, please assume that
+delta t equals 0.1, and DON'T write delta t; write 0.1!
+
+HW2.6
+Let's now come to our programming exercise. And I want you to program
+exactly what we just talked about. We're given a two-dimensional world
+where we observe in 2D - measurements of a moving object with an
+unknown but fixed velocity, and using a state vector of this type. I'd
+like you to implement the Kalman Filter. Now this Kalman filter has
+now four state variables, whereas the one we used before has two state
+variables.
+I will give you the entire code for the Kalman Filter, but I want you
+to set up the state vector x, the motion U, P, F, H, R and I which are
+all those variables that define the Kalman Filter. Start with the
+assignment that we had in 2D, and make it work in 4D. Now here's
+exactly the same matrix class that I wrote you before. Here is the
+Kalman Filter procedure. We go through our measurements and apply the
+Kalman Filter equations. I should point out that there is a slight
+difference to the code I gave you previously, for our incident
+Z.transpose makes it a little easier to work with multi-dimensional
+measurements that never had it before, but you don't have to pay
+attention to this. It is just fixed, it was a kind of a bug before.
+And as I scroll down, the output of the Kalman Filter routine will be
+an x and a P. In our example the measurements will be a sequence of
+measurements in two-dimensional spaces now - in x and y - with the
+x'es 5, 6, 7, 8, 9, 10, the y's go 10, 8, 7, 4, 2, you can imagine
+what the regularity is and the velocity is. We assume a dt of 0.1 -
+that means, when it goes from 5 to 6 the velocity is actually 10 not
+1, but we won't tell the system, but we WILL tell the system our
+initial x y location which is 4 - which goes nice into 5, 6, 7... and
+it's 12 that blends nice into 10, 8 and 6. Our initial state vector I
+will be giving you, which is the initial x and y and zero zero for the
+two unknown velocities. And the motion vector just for completeness
+will just be 0, 0, 0, 0 - we have no external motion. Ah, that's a bit
+confusing because there's actually motion in the system itself, but
+this will be more like an external change of the motion, as if someone
+hit the object with en external force, so it's 0, 0, 0, 0. Please
+don't change it.
+P is the initial uncertainty and I want you to initialize it so that
+the uncertainty for the x y coordinates is 0, but the covariance term
+for the velocities is 1000 indicating that we really don't know the
+initial velocity, we just know the initial position. I want you to
+plug in the F matrix. I want you to design an H matrix that's a
+projection matrix from four-dimensional state space to two dimensions,
+reflecting the fact that we can only observe the first two state
+variables x and y, but not the velocities. I want you to define a
+measurement uncertainty matrix which now is a two by two that has 0.1
+as the main diagonal as measurement noise, and this is an identity
+matrix over here. Once you design all those, you should get the
+following output.
+So when I run this, I get as an output for my four-dimensional example
+the x coordinates 10 and 0 and this makes sense, given that the
+sequences over here had as a final measurement 10 and 0 - 5, 6, 7, 8,
+9, 10; 10, 8, 6, 4, 2, 0. The interesting thing that I want your
+program to produce is the velocities. They're approximately 10 which
+makes sense given a delta t of 0.1 gives us per timestep a 10 divided
+by 10 equals 1 increment over here, and the second velocity is -20;
+multiplied by .1 gives us a -2 and you can see it over here - 10, 8,
+6, 4 and 2. I also want you to output the covariance matrix - just
+certain off-elements that are still zero, like these guys over here -
+but we find along the main diagonal our uncertainty has shrunk
+substantially.
+It's 0.03 for the coordinate estimates and 0.1 for the velocity
+estimates. Remember, this number over here was a thousand
+before. Here's a second example, where we have an initial coordinate
+of -4 and 8. You can see the measurements - 1, 6, 11, 16; it seems the
+increments are in x-direction 5, in y-direction they're -4: 8, 4, 0,
+-4, -8. If I now run this, I get for my x-vector approximately 16, the
+number over here, approximately -8, the number over here, and these
+are the velocities: 50 and -40 in approximation, which multiplied by
+.1 is our +5 and our -4. Here is yet another example. Initial state 1
+and 19. You can see the first coordinate doesn't change at all, we
+should get a velocity of zero. The second coordinate goes from 19, 17,
+15, 13, 11. Running this gives us 1 -unchanged- and 11. Velocities are
+0 and -20 for the decrements of -2. And going into the covariance we
+see values along the main diagonals 0.05, 0.05, 0.33 and 0.33 for
+velocities. There are certain off-diagonal elements. Make sure those
+all match what your code produces.
+I can now change some of these measurements to make a noisy
+measurement. One way to do this is to set an off set measurement
+between 2 and 0. Remember that this Kalman Filter assumes a fixed
+velocity. There is no way to explain these measurements by the fixed
+velocity, so that be measurement noise. So we can run the Kalman
+Filter again. Your filter to output the following values. 0.7 for the
+current state, 11 as before, and here are our two velocity
+estimates. It actually believes there is a slight velocity of -.66 in
+the x-direction where we had noisy sensor input. The covariance matrix
+should look exactly as before, cause it's not affected by the
+measurements themselves. So your job is to fill in those various
+matrices. Good luck!
