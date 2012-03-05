@@ -7,9 +7,6 @@
 # step (originally) is it not divisible by five, but the remainder - 1
 # is
 
-n1 = 4(n0 - 1)/5
-n0 - 1 % 5 == 0
-
 def can_work(n, mans_turn=6):
     if mans_turn < 1:
         return True
@@ -35,4 +32,6 @@ while coconuts < 100000:
         break
     coconuts += 1
 
+
+# answer is 15621
 
